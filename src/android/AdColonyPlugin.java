@@ -101,6 +101,7 @@ public class AdColonyPlugin extends CordovaPlugin {
 	protected String appId;
 	protected String interstitialAdZoneId;
 	protected String rewardedVideoAdZoneId;
+	protected String userId;
 
 	@Override
 	public void pluginInitialize() {
