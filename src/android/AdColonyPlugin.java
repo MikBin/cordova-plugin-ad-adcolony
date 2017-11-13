@@ -1,6 +1,6 @@
-//Copyright (c) 2014 Sang Ki Kwon (Cranberrygame)
-//Email: cranberrygame@yahoo.com
-//Homepage: http://cranberrygame.github.io
+//Copyright (c) 2017 Michele Bini
+//Email: mikbin80@gmail.com
+//Homepage: 
 //License: MIT (http://opensource.org/licenses/MIT)
 package com.cranberrygame.cordova.plugin.ad.adcolony;
 
@@ -39,49 +39,52 @@ class Util {
 
 	//ex) Util.alert(cordova.getActivity(),"message");
 	public static void alert(Activity activity, String message) {
-		AlertDialog ad = new AlertDialog.Builder(activity).create();  
+		AlertDialog ad = new AlertDialog.Builder(activity).create();
 		ad.setCancelable(false); // This blocks the 'BACK' button  
-		ad.setMessage(message);  
-		ad.setButton("OK", new DialogInterface.OnClickListener() {  
-			@Override  
-			public void onClick(DialogInterface dialog, int which) {  
-				dialog.dismiss();                      
-			}  
-		});  
-		ad.show(); 		
+		ad.setMessage(message);
+		ad.setButton("OK", new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				dialog.dismiss();
+			}
+		});
+		ad.show();
 	}
-	
+
 	//https://gitshell.com/lvxudong/A530_packages_app_Camera/blob/master/src/com/android/camera/Util.java
 	public static int getDisplayRotation(Activity activity) {
-	    int rotation = activity.getWindowManager().getDefaultDisplay()
-	            .getRotation();
-	    switch (rotation) {
-	        case Surface.ROTATION_0: return 0;
-	        case Surface.ROTATION_90: return 90;
-	        case Surface.ROTATION_180: return 180;
-	        case Surface.ROTATION_270: return 270;
-	    }
-	    return 0;
+		int rotation = activity.getWindowManager().getDefaultDisplay().getRotation();
+		switch (rotation) {
+		case Surface.ROTATION_0:
+			return 0;
+		case Surface.ROTATION_90:
+			return 90;
+		case Surface.ROTATION_180:
+			return 180;
+		case Surface.ROTATION_270:
+			return 270;
+		}
+		return 0;
 	}
 
 	public static final String md5(final String s) {
-        try {
-            MessageDigest digest = java.security.MessageDigest.getInstance("MD5");
-            digest.update(s.getBytes());
-            byte messageDigest[] = digest.digest();
-            StringBuffer hexString = new StringBuffer();
-            for (int i = 0; i < messageDigest.length; i++) {
-                String h = Integer.toHexString(0xFF & messageDigest[i]);
-                while (h.length() < 2)
-                    h = "0" + h;
-                hexString.append(h);
-            }
-            return hexString.toString();
+		try {
+			MessageDigest digest = java.security.MessageDigest.getInstance("MD5");
+			digest.update(s.getBytes());
+			byte messageDigest[] = digest.digest();
+			StringBuffer hexString = new StringBuffer();
+			for (int i = 0; i < messageDigest.length; i++) {
+				String h = Integer.toHexString(0xFF & messageDigest[i]);
+				while (h.length() < 2)
+					h = "0" + h;
+				hexString.append(h);
+			}
+			return hexString.toString();
 
-        } catch (NoSuchAlgorithmException e) {
-        }
-        return "";
-    }
+		} catch (NoSuchAlgorithmException e) {
+		}
+		return "";
+	}
 }
 
 public class AdColonyPlugin extends CordovaPlugin {
@@ -98,88 +101,68 @@ public class AdColonyPlugin extends CordovaPlugin {
 	protected String appId;
 	protected String interstitialAdZoneId;
 	protected String rewardedVideoAdZoneId;
-	
-    @Override
+
+	@Override
 	public void pluginInitialize() {
 		super.pluginInitialize();
 		//
-    }
-	
+	}
+
 	//@Override
 	//public void onCreate(Bundle savedInstanceState) {//build error
 	//	super.onCreate(savedInstanceState);
 	//	//
 	//}
-	
+
 	//@Override
 	//public void onStart() {//build error
 	//	super.onStart();
 	//	//
 	//}
-	
+
 	@Override
 	public void onPause(boolean multitasking) {
 		super.onPause(multitasking);
 	}
-	
+
 	@Override
 	public void onResume(boolean multitasking) {
 		super.onResume(multitasking);
 	}
-	
+
 	//@Override
 	//public void onStop() {//build error
 	//	super.onStop();
 	//	//
 	//}
-	
+
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
 		//
 	}
-	
+
 	@Override
 	public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
 
-		if (action.equals("setLicenseKey")) {
-			setLicenseKey(action, args, callbackContext);
-
-			return true;
-		}	
-		else if (action.equals("setUp")) {
+		 if (action.equals("setUp")) {
 			setUp(action, args, callbackContext);
 
 			return true;
-		}			
-		else if (action.equals("showInterstitialAd")) {
+		} else if (action.equals("showInterstitialAd")) {
 			showInterstitialAd(action, args, callbackContext);
-						
+
 			return true;
-		}
-		else if (action.equals("showRewardedVideoAd")) {
+		} else if (action.equals("showRewardedVideoAd")) {
 			showRewardedVideoAd(action, args, callbackContext);
-						
+
 			return true;
 		}
-		
+
 		return false; // Returning false results in a "MethodNotFound" error.
 	}
 
-	private void setLicenseKey(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
-		final String email = args.getString(0);
-		final String licenseKey = args.getString(1);				
-		Log.d(LOG_TAG, String.format("%s", email));			
-		Log.d(LOG_TAG, String.format("%s", licenseKey));
-		
-		cordova.getActivity().runOnUiThread(new Runnable() {
-			@Override
-			public void run() {
-				_setLicenseKey(email, licenseKey);
-			}
-		});
-	}
-	
+
 	private void setUp(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
 		//Activity activity=cordova.getActivity();
 		//webView
@@ -209,23 +192,26 @@ public class AdColonyPlugin extends CordovaPlugin {
 		final String appId = args.getString(0);
 		final String interstitialAdZoneId = args.getString(1);
 		final String rewardedVideoAdZoneId = args.getString(2);
-		Log.d(LOG_TAG, String.format("%s", appId));			
-		Log.d(LOG_TAG, String.format("%s", interstitialAdZoneId));			
-		Log.d(LOG_TAG, String.format("%s", rewardedVideoAdZoneId));			
-		
+		final String userId = args.getString(3);
+		Log.d(LOG_TAG, String.format("%s", appId));
+		Log.d(LOG_TAG, String.format("%s", interstitialAdZoneId));
+		Log.d(LOG_TAG, String.format("%s", rewardedVideoAdZoneId));
+		Log.d(LOG_TAG, String.format("%s", userId));
+
 		callbackContextKeepCallback = callbackContext;
-			
+
 		cordova.getActivity().runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
-				_setUp(appId, interstitialAdZoneId, rewardedVideoAdZoneId);
+				_setUp(appId, interstitialAdZoneId, rewardedVideoAdZoneId, userId);
 			}
 		});
 	}
-	
-	private void showInterstitialAd(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
 
-		cordova.getActivity().runOnUiThread(new Runnable(){
+	private void showInterstitialAd(String action, JSONArray args, CallbackContext callbackContext)
+			throws JSONException {
+
+		cordova.getActivity().runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
 				_showInterstitialAd();
@@ -233,82 +219,45 @@ public class AdColonyPlugin extends CordovaPlugin {
 		});
 	}
 
-	private void showRewardedVideoAd(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
+	private void showRewardedVideoAd(String action, JSONArray args, CallbackContext callbackContext)
+			throws JSONException {
 
-		cordova.getActivity().runOnUiThread(new Runnable(){
+		cordova.getActivity().runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
 				_showRewardedVideoAd();
 			}
 		});
 	}
-	
-	public void _setLicenseKey(String email, String licenseKey) {
-		this.email = email;
-		this.licenseKey = licenseKey;
-		
-		//
-		String str1 = Util.md5("cordova-plugin-: " + email);
-		String str2 = Util.md5("cordova-plugin-ad-adcolony: " + email);
-		String str3 = Util.md5("com.cranberrygame.cordova.plugin.: " + email);
-		String str4 = Util.md5("com.cranberrygame.cordova.plugin.ad.adcolony: " + email);
-		String str5 = Util.md5("com.cranberrygame.cordova.plugin.ad.video.adcolony: " + email);
-		if(licenseKey != null && (licenseKey.equalsIgnoreCase(str1) || licenseKey.equalsIgnoreCase(str2) || licenseKey.equalsIgnoreCase(str3) || licenseKey.equalsIgnoreCase(str4) || licenseKey.equalsIgnoreCase(str5))) {
-			this.validLicenseKey = true;
-			//
-			String[] excludedLicenseKeys = {"xxx"};
-			for (int i = 0 ; i < excludedLicenseKeys.length ; i++) {
-				if (excludedLicenseKeys[i].equals(licenseKey)) {
-					this.validLicenseKey = false;
-					break;
-				}
-			}			
-			if (this.validLicenseKey)
-				Log.d(LOG_TAG, String.format("%s", "valid licenseKey"));
-			else
-				Log.d(LOG_TAG, String.format("%s", "invalid licenseKey"));
-		}
-		else {
-			Log.d(LOG_TAG, String.format("%s", "invalid licenseKey"));
-			this.validLicenseKey = false;			
-		}
-		//if (!this.validLicenseKey)
-		//	Util.alert(cordova.getActivity(),"Cordova AdColony: invalid email / license key. You can get free license key from https://play.google.com/store/apps/details?id=com.cranberrygame.pluginsforcordova");			
-	}
-	
-	private void _setUp(String appId, String interstitialAdZoneId, String rewardedVideoAdZoneId) {
+
+
+
+	private void _setUp(String appId, String interstitialAdZoneId, String rewardedVideoAdZoneId, String userId) {
 		this.appId = appId;
 		this.interstitialAdZoneId = interstitialAdZoneId;
 		this.rewardedVideoAdZoneId = rewardedVideoAdZoneId;
-				
-		if (!validLicenseKey) {
-			if (new Random().nextInt(100) <= 1) {//0~99					
-				this.appId = TEST_APP_ID;
-				this.interstitialAdZoneId = TEST_INTERSTITIAL_AD_ZONE_ID;
-				this.rewardedVideoAdZoneId = TEST_REWARDED_VIDEO_AD_ZONE_ID;
-			}
-		}
+		this.userId = userId;
 
 		String optionString = "";
 		//version - arbitrary application version
 		//store   - google or amazon
 		//String optionString = "version:1.0,store:google";
-/*		
-		try {
-			JSONObject options = args.getJSONObject(2);
-			String deviceId = options.getString("deviceId");
-			String customId = options.getString("customId");
-			if (deviceId != null) 
-                AdColony.setDeviceID( deviceId );
-			if (customId != null) 
-                AdColony.setCustomID( customId );
-			optionString = options.getString("optionString");
-		}
-		catch (JSONException exception) {
-			// Do nothing
-		}
-*/        
-				
+		/*		
+				try {
+					JSONObject options = args.getJSONObject(2);
+					String deviceId = options.getString("deviceId");
+					String customId = options.getString("customId");
+					if (deviceId != null) 
+		        AdColony.setDeviceID( deviceId );
+					if (customId != null) 
+		        AdColony.setCustomID( customId );
+					optionString = options.getString("optionString");
+				}
+				catch (JSONException exception) {
+					// Do nothing
+				}
+		*/
+
 		String[] zoneIds = new String[2];
 		zoneIds[0] = this.interstitialAdZoneId;
 		zoneIds[1] = this.rewardedVideoAdZoneId;
@@ -316,86 +265,82 @@ public class AdColonyPlugin extends CordovaPlugin {
 		//AdColony.configure(cordova.getActivity(), optionString, this.appId, zoneIds);
 		//AdColony.addAdAvailabilityListener(new MyAdColonyAdAvailabilityListener());
 		//AdColony.addV4VCListener(new MyAdColonyV4VCListener());
-		AdColonyAppOptions app_options = new AdColonyAppOptions().setUserID( "unique_user_id" );
-		AdColony.configure(cordova.getActivity(),app_options, this.appId, zoneIds);
-//		AdColony.addAdAvailabilityListener(new MyAdColonyAdAvailabilityListener());	
-		AdColony.setRewardListener(new	MyAdColonyRewardListener());		
+		AdColonyAppOptions app_options = new AdColonyAppOptions().setUserID(userId);
+		AdColony.configure(cordova.getActivity(), app_options, this.appId, zoneIds);
+		//		AdColony.addAdAvailabilityListener(new MyAdColonyAdAvailabilityListener());	
+		AdColony.setRewardListener(new MyAdColonyRewardListener());
 	}
 
 	private void _showInterstitialAd() {
-	
-//		AdColonyVideoAd ad = new AdColonyVideoAd(interstitialAdZoneId);
-//		ad.withListener(new AdColonyAdListenerInterstitialAd());
-//		ad.show();
+
+		//		AdColonyVideoAd ad = new AdColonyVideoAd(interstitialAdZoneId);
+		//		ad.withListener(new AdColonyAdListenerInterstitialAd());
+		//		ad.show();
 		AdColonyAdOptions ad_options;
-        AdColonyUserMetadata metadata = new AdColonyUserMetadata()
-                .setUserAge( 26 )
-                .setUserEducation( AdColonyUserMetadata.USER_EDUCATION_BACHELORS_DEGREE )
-                .setUserGender( AdColonyUserMetadata.USER_MALE );
-        ad_options = new AdColonyAdOptions()
-				.setUserMetadata(metadata);		
-		AdColony.requestInterstitial(interstitialAdZoneId, new MyAdColonyInterstitialListenerInterstitialAd(), ad_options );
+		AdColonyUserMetadata metadata = new AdColonyUserMetadata().setUserAge(26)
+				.setUserEducation(AdColonyUserMetadata.USER_EDUCATION_BACHELORS_DEGREE)
+				.setUserGender(AdColonyUserMetadata.USER_MALE);
+		ad_options = new AdColonyAdOptions().setUserMetadata(metadata);
+		AdColony.requestInterstitial(interstitialAdZoneId, new MyAdColonyInterstitialListenerInterstitialAd(),
+				ad_options);
 	}
 
 	private void _showRewardedVideoAd() {
-		
-//		AdColonyV4VCAd ad = new AdColonyV4VCAd(rewardedVideoAdZoneId);
-//		ad.withListener(new AdColonyAdListenerRewardedVideoAd());
-//		//ad.withConfirmationDialog().withResultsDialog();
-//		ad.show();
-//		//ad.getRewardName()
-//		//ad.getAvailableViews()
+
+		//		AdColonyV4VCAd ad = new AdColonyV4VCAd(rewardedVideoAdZoneId);
+		//		ad.withListener(new AdColonyAdListenerRewardedVideoAd());
+		//		//ad.withConfirmationDialog().withResultsDialog();
+		//		ad.show();
+		//		//ad.getRewardName()
+		//		//ad.getAvailableViews()
 		AdColonyAdOptions ad_options;
-        AdColonyUserMetadata metadata = new AdColonyUserMetadata()
-                .setUserAge( 26 )
-                .setUserEducation( AdColonyUserMetadata.USER_EDUCATION_BACHELORS_DEGREE )
-                .setUserGender( AdColonyUserMetadata.USER_MALE );
-        ad_options = new AdColonyAdOptions()
-                .enableConfirmationDialog( true )
-                .enableResultsDialog( true )
-                .setUserMetadata( metadata );        			
-		AdColony.requestInterstitial(rewardedVideoAdZoneId, new MyAdColonyInterstitialListenerRewardedVideoAd(), ad_options );
+		AdColonyUserMetadata metadata = new AdColonyUserMetadata().setUserAge(26)
+				.setUserEducation(AdColonyUserMetadata.USER_EDUCATION_BACHELORS_DEGREE)
+				.setUserGender(AdColonyUserMetadata.USER_MALE);
+		ad_options = new AdColonyAdOptions().enableConfirmationDialog(true).enableResultsDialog(true)
+				.setUserMetadata(metadata);
+		AdColony.requestInterstitial(rewardedVideoAdZoneId, new MyAdColonyInterstitialListenerRewardedVideoAd(),
+				ad_options);
 	}
-	
-/*
-	class MyAdColonyAdAvailabilityListener extends AdColonyAdAvailabilityListener {
-		// Ad Availability Change Callback - update button text
-		public void onAdColonyAdAvailabilityChange(boolean available, String zone_id) {
-			Log.d(LOG_TAG, String.format("%s: %b", "onAdColonyAdAvailabilityChange", available));
-			
-			if (available) {
-				if(zone_id.equals(interstitialAdZoneId)) {
-					PluginResult pr = new PluginResult(PluginResult.Status.OK, "onInterstitialAdLoaded");
-					pr.setKeepCallback(true);
-					callbackContextKeepCallback.sendPluginResult(pr);
-					//PluginResult pr = new PluginResult(PluginResult.Status.ERROR);
-					//pr.setKeepCallback(true);
-					//callbackContextKeepCallback.sendPluginResult(pr);			
-				}
-				else if(zone_id.equals(rewardedVideoAdZoneId)) {
-					PluginResult pr = new PluginResult(PluginResult.Status.OK, "onRewardedVideoAdLoaded");
-					pr.setKeepCallback(true);
-					callbackContextKeepCallback.sendPluginResult(pr);
-					//PluginResult pr = new PluginResult(PluginResult.Status.ERROR);
-					//pr.setKeepCallback(true);
-					//callbackContextKeepCallback.sendPluginResult(pr);
+
+	/*
+		class MyAdColonyAdAvailabilityListener extends AdColonyAdAvailabilityListener {
+			// Ad Availability Change Callback - update button text
+			public void onAdColonyAdAvailabilityChange(boolean available, String zone_id) {
+				Log.d(LOG_TAG, String.format("%s: %b", "onAdColonyAdAvailabilityChange", available));
+				
+				if (available) {
+					if(zone_id.equals(interstitialAdZoneId)) {
+						PluginResult pr = new PluginResult(PluginResult.Status.OK, "onInterstitialAdLoaded");
+						pr.setKeepCallback(true);
+						callbackContextKeepCallback.sendPluginResult(pr);
+						//PluginResult pr = new PluginResult(PluginResult.Status.ERROR);
+						//pr.setKeepCallback(true);
+						//callbackContextKeepCallback.sendPluginResult(pr);			
+					}
+					else if(zone_id.equals(rewardedVideoAdZoneId)) {
+						PluginResult pr = new PluginResult(PluginResult.Status.OK, "onRewardedVideoAdLoaded");
+						pr.setKeepCallback(true);
+						callbackContextKeepCallback.sendPluginResult(pr);
+						//PluginResult pr = new PluginResult(PluginResult.Status.ERROR);
+						//pr.setKeepCallback(true);
+						//callbackContextKeepCallback.sendPluginResult(pr);
+					}
 				}
 			}
 		}
-	}
-*/
+	*/
 
 	class MyAdColonyRewardListener implements AdColonyRewardListener {
 
 		@Override
-		public void onReward( AdColonyReward reward )
-		{
+		public void onReward(AdColonyReward reward) {
 			Log.d(LOG_TAG, String.format("%s: %b", "onReward", reward.success()));
-			
-			if (reward.success()) {				
+
+			if (reward.success()) {
 				//reward.name();
 				//reward.amount();
-								
+
 				PluginResult pr = new PluginResult(PluginResult.Status.OK, "onRewardedVideoAdCompleted");
 				pr.setKeepCallback(true);
 				callbackContextKeepCallback.sendPluginResult(pr);
@@ -403,32 +348,29 @@ public class AdColonyPlugin extends CordovaPlugin {
 				//pr.setKeepCallback(true);
 				//callbackContextKeepCallback.sendPluginResult(pr);				
 			}
-		}		
+		}
 	}
-	
+
 	class MyAdColonyInterstitialListenerInterstitialAd extends AdColonyInterstitialListener {
-		
+
 		/** Ad passed back in request filled callback, ad can now be shown */
 		@Override
-		public void onRequestFilled( AdColonyInterstitial ad )
-		{
+		public void onRequestFilled(AdColonyInterstitial ad) {
 			Log.d(LOG_TAG, String.format("%s", "onRequestFilled"));
 			ad.show();
 		}
 
 		/** Ad request was not filled */
 		@Override
-		public void onRequestNotFilled( AdColonyZone zone )
-		{
+		public void onRequestNotFilled(AdColonyZone zone) {
 			Log.d(LOG_TAG, String.format("%s", "onRequestNotFilled"));
 		}
 
 		/** Ad opened, reset UI to reflect state change */
 		@Override
-		public void onOpened( AdColonyInterstitial ad )
-		{
+		public void onOpened(AdColonyInterstitial ad) {
 			Log.d(LOG_TAG, String.format("%s", "onOpened"));
-			
+
 			PluginResult pr = new PluginResult(PluginResult.Status.OK, "onInterstitialAdShown");
 			pr.setKeepCallback(true);
 			callbackContextKeepCallback.sendPluginResult(pr);
@@ -439,12 +381,11 @@ public class AdColonyPlugin extends CordovaPlugin {
 
 		/** Request a new ad if ad is expiring */
 		@Override
-		public void onExpiring( AdColonyInterstitial ad )
-		{
-//			AdColony.requestInterstitial( ZONE_ID, this, ad_options );//
+		public void onExpiring(AdColonyInterstitial ad) {
+			//			AdColony.requestInterstitial( ZONE_ID, this, ad_options );//
 
 			Log.d(LOG_TAG, String.format("%s", "onExpiring"));
-			
+
 			PluginResult pr = new PluginResult(PluginResult.Status.OK, "onInterstitialAdHidden");
 			pr.setKeepCallback(true);
 			callbackContextKeepCallback.sendPluginResult(pr);
@@ -455,28 +396,25 @@ public class AdColonyPlugin extends CordovaPlugin {
 	}
 
 	class MyAdColonyInterstitialListenerRewardedVideoAd extends AdColonyInterstitialListener {
-		
+
 		/** Ad passed back in request filled callback, ad can now be shown */
 		@Override
-		public void onRequestFilled( AdColonyInterstitial ad )
-		{
+		public void onRequestFilled(AdColonyInterstitial ad) {
 			Log.d(LOG_TAG, String.format("%s", "onRequestFilled"));
 			ad.show();
 		}
 
 		/** Ad request was not filled */
 		@Override
-		public void onRequestNotFilled( AdColonyZone zone )
-		{
+		public void onRequestNotFilled(AdColonyZone zone) {
 			Log.d(LOG_TAG, String.format("%s", "onRequestNotFilled"));
 		}
 
 		/** Ad opened, reset UI to reflect state change */
 		@Override
-		public void onOpened( AdColonyInterstitial ad )
-		{
+		public void onOpened(AdColonyInterstitial ad) {
 			Log.d(LOG_TAG, String.format("%s", "onOpened"));
-			
+
 			PluginResult pr = new PluginResult(PluginResult.Status.OK, "onRewardedVideoAdShown");
 			pr.setKeepCallback(true);
 			callbackContextKeepCallback.sendPluginResult(pr);
@@ -487,18 +425,17 @@ public class AdColonyPlugin extends CordovaPlugin {
 
 		/** Request a new ad if ad is expiring */
 		@Override
-		public void onExpiring( AdColonyInterstitial ad )
-		{
-//			AdColony.requestInterstitial( ZONE_ID, this, ad_options );//
-	
+		public void onExpiring(AdColonyInterstitial ad) {
+			//			AdColony.requestInterstitial( ZONE_ID, this, ad_options );//
+
 			Log.d(LOG_TAG, String.format("%s", "onExpiring"));
-			
+
 			PluginResult pr = new PluginResult(PluginResult.Status.OK, "onRewardedVideoAdHidden");
 			pr.setKeepCallback(true);
 			callbackContextKeepCallback.sendPluginResult(pr);
 			//PluginResult pr = new PluginResult(PluginResult.Status.ERROR);
 			//pr.setKeepCallback(true);
 			//callbackContextKeepCallback.sendPluginResult(pr);	
-		}		
+		}
 	}
 }

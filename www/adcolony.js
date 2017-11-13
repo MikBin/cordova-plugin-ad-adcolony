@@ -4,18 +4,8 @@ module.exports = {
 	_loadedRewardedVideoAd: false,
 	_isShowingInterstitialAd: false,
 	_isShowingRewardedVideoAd: false,
-	//
-	setLicenseKey: function(email, licenseKey) {
-		var self = this;	
-        cordova.exec(
-            null,
-            null,
-            'AdColonyPlugin',
-            'setLicenseKey',			
-            [email, licenseKey]
-        ); 
-    },
-	setUp: function(appId, InterstitialAdZoneId, rewardedVideoAdZoneId) {
+	setUp: function(appId, InterstitialAdZoneId, rewardedVideoAdZoneId,userId) {
+		console.log("setup adcolony called!");
 		var self = this;	
         cordova.exec(
 			function (result) {
@@ -92,7 +82,7 @@ module.exports = {
 			},
             'AdColonyPlugin',
             'setUp',			
-			[appId, InterstitialAdZoneId, rewardedVideoAdZoneId]
+			[appId, InterstitialAdZoneId, rewardedVideoAdZoneId,userId]
         ); 
     },
 //cranberrygame start; deprecated
